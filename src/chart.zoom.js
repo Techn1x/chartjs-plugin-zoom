@@ -199,7 +199,7 @@ function doZoom(chartInstance, zoom, center, whichAxes) {
 		chartInstance.update(0);
 
 		if (typeof zoomOptions.onZoom === 'function') {
-			zoomOptions.onZoom(chartInstance, zoom, center, whichAxes);
+			zoomOptions.onZoom(chartInstance, zoom, center, _whichAxes);
 		}
 	}
 }
