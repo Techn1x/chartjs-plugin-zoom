@@ -33,7 +33,7 @@ To configure the zoom and pan plugin, you can simply add new config options to y
 		},
 		// Function called once panning is completed
 		// Useful for dynamic data loading
-		onPan: function() { console.log('I was panned!!!'); }
+		onPan: function({chartInstance, deltaX, deltaY}) { console.log(`I was panned!!! deltaX: ${deltaX}, deltaY: ${deltaY}`); }
 	},
 	
 	// Container for zoom options
@@ -43,6 +43,13 @@ To configure the zoom and pan plugin, you can simply add new config options to y
 
 		// Enable drag-to-zoom behavior
 		drag: true,
+
+		// Drag-to-zoom rectangle style can be customized
+		// drag: {
+		// 	 borderColor: 'rgba(225,225,225,0.3)'
+		// 	 borderWidth: 5,
+		// 	 backgroundColor: 'rgb(225,225,225)'
+		// },
 
 		// Zooming directions. Remove the appropriate direction to disable 
 		// Eg. 'y' would only allow zooming in the y direction
@@ -59,7 +66,7 @@ To configure the zoom and pan plugin, you can simply add new config options to y
 		},
 		// Function called once zooming is completed
 		// Useful for dynamic data loading
-		onZoom: function() { console.log('I was zoomed!!!'); }
+		onZoom: function({chartInstance, zoomX, zoomY, center, whichAxes) { console.log(`I was zoomed!!! zoomX: ${zoomX} zoomY: ${zoomY}`); }
 	}
 }
 ```
