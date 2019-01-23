@@ -198,7 +198,7 @@ function doZoom(chartInstance, zoomX, zoomY, center, whichAxes) {
 		chartInstance.update(0);
 
 		if (typeof zoomOptions.onZoom === 'function') {
-			zoomOptions.onZoom(chartInstance, zoom, center, _whichAxes);
+			zoomOptions.onZoom({chartInstance, zoomX, zoomY, center, _whichAxes});
 		}
 	}
 }
@@ -276,7 +276,7 @@ function doPan(chartInstance, deltaX, deltaY) {
 		chartInstance.update(0);
 
 		if (typeof panOptions.onPan === 'function') {
-			panOptions.onPan(chartInstance, deltaX, deltaY);
+			panOptions.onPan({chartInstance, deltaX, deltaY});
 		}
 	}
 }
