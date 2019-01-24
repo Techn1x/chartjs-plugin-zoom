@@ -210,7 +210,13 @@ function doZoom(chartInstance, zoomX, zoomY, center, whichAxes) {
 		chartInstance.update(0);
 
 		if (typeof zoomOptions.onZoom === 'function') {
-			zoomOptions.onZoom(chartInstance, zoom, center, _whichAxes);
+			zoomOptions.onZoom({
+				chartInstance: chartInstance,
+				zoomX: zoomX,
+				zoomY: zoomY,
+				center: center,
+				_whichAxes: _whichAxes
+			});
 		}
 	}
 }
@@ -288,7 +294,11 @@ function doPan(chartInstance, deltaX, deltaY) {
 		chartInstance.update(0);
 
 		if (typeof panOptions.onPan === 'function') {
-			panOptions.onPan(chartInstance, deltaX, deltaY);
+			panOptions.onPan({
+				chartInstance: chartInstance,
+				deltaX: deltaX,
+				deltaY: deltaY
+			});
 		}
 	}
 }
@@ -413,11 +423,11 @@ var zoomPlugin = {
 
 					var dragDistanceX = endX - startX;
 					var chartDistanceX = chartArea.right - chartArea.left;
-					var zoomX = 1 + ((chartDistanceX - dragDistanceX) / chartDistanceX );
+					var zoomX = 1 + ((chartDistanceX - dragDistanceX) / chartDistanceX);
 
 					var dragDistanceY = endY - startY;
 					var chartDistanceY = chartArea.bottom - chartArea.top;
-					var zoomY = 1 + ((chartDistanceY - dragDistanceY) / chartDistanceY );
+					var zoomY = 1 + ((chartDistanceY - dragDistanceY) / chartDistanceY);
 
 					// Remove drag start and end before chart update to stop drawing selected area
 					chartInstance.zoom._dragZoomStart = null;
@@ -431,7 +441,7 @@ var zoomPlugin = {
 					}
 				}
 			};
-			node.addEventListener('mouseup', chartInstance.zoom._mouseUpHandler);
+			node.ownerDocument.addEventListener('mouseup', chartInstance.zoom._mouseUpHandler);
 		} else {
 			chartInstance.zoom._wheelHandler = function(event) {
 				var rect = event.target.getBoundingClientRect();
@@ -577,10 +587,16 @@ var zoomPlugin = {
 
 			var rectWidth = endX - startX;
 			var rectHeight = endY - startY;
+			var dragOptions = chartInstance.options.zoom.drag;
 
-			ctx.fillStyle = 'rgba(225,225,225,0.3)';
-			ctx.lineWidth = 5;
+			ctx.fillStyle = dragOptions.backgroundColor || 'rgba(225,225,225,0.3)';
 			ctx.fillRect(startX, startY, rectWidth, rectHeight);
+
+			if (dragOptions.borderWidth > 0) {
+				ctx.lineWidth = dragOptions.borderWidth;
+				ctx.strokeStyle = dragOptions.borderColor || 'rgba(225,225,225)';
+				ctx.strokeRect(startX, startY, rectWidth, rectHeight);
+			}
 		}
 
 		ctx.rect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
@@ -599,7 +615,7 @@ var zoomPlugin = {
 			if (options.zoom && options.zoom.drag) {
 				node.removeEventListener('mousedown', chartInstance.zoom._mouseDownHandler);
 				node.removeEventListener('mousemove', chartInstance.zoom._mouseMoveHandler);
-				node.removeEventListener('mouseup', chartInstance.zoom._mouseUpHandler);
+				node.ownerDocument.removeEventListener('mouseup', chartInstance.zoom._mouseUpHandler);
 			} else {
 				node.removeEventListener('wheel', chartInstance.zoom._wheelHandler);
 			}
