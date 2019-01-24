@@ -198,7 +198,13 @@ function doZoom(chartInstance, zoomX, zoomY, center, whichAxes) {
 		chartInstance.update(0);
 
 		if (typeof zoomOptions.onZoom === 'function') {
-			zoomOptions.onZoom({chartInstance, zoomX, zoomY, center, _whichAxes});
+			zoomOptions.onZoom({
+				chartInstance: chartInstance,
+				zoomX: zoomX,
+				zoomY: zoomY,
+				center: center,
+				_whichAxes: _whichAxes
+			});
 		}
 	}
 }
@@ -276,7 +282,11 @@ function doPan(chartInstance, deltaX, deltaY) {
 		chartInstance.update(0);
 
 		if (typeof panOptions.onPan === 'function') {
-			panOptions.onPan({chartInstance, deltaX, deltaY});
+			panOptions.onPan({
+				chartInstance: chartInstance,
+				deltaX: deltaX,
+				deltaY: deltaY
+			});
 		}
 	}
 }
